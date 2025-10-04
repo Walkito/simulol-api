@@ -1,0 +1,7 @@
+{
+  "execMap": {
+    "ts": "node --loader ts-node/esm"
+  },
+  "ext": "ts,js,json",
+  "exec": "node --loader ts-node/esm src/server.ts"
+}
