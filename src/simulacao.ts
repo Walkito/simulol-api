@@ -1,5 +1,3 @@
-
-import { EVENTO } from "./enums/evento.js";
 import { LADO } from "./enums/lado.js";
 import { ROTA } from "./enums/rota.js";
 import type { Equipe } from "./elementosPartida/equipe.js";
@@ -7,13 +5,18 @@ import { equipeAzul } from "./elementosPartida/equipeAzul.js";
 import { equipeVermelho } from "./elementosPartida/equipeVermelho.js";
 import { MapaPartida } from "./elementosPartida/mapaPartida.js";
 import type { Estrutura } from "./elementosPartida/estrutura.js";
+import { EVENTO } from "./enums/evento.js";
 
-const k = 0.1;
-const eventos = Object.entries(EVENTO).filter(([key, value]) => typeof value === 'number') as [string, number][];
+const k: number = 0.1;
+const eventosPermitidos: [string, number][] = [
+  [EVENTO[EVENTO.LUTA_PEQUENA], EVENTO.LUTA_PEQUENA],
+  [EVENTO[EVENTO.LUTA_MEDIA], EVENTO.LUTA_MEDIA],
+  [EVENTO[EVENTO.LUTA_GRANDE], EVENTO.LUTA_GRANDE]
+];
 
 export const iniciarSimulacao = () => {
-  const mapa = new MapaPartida();
-  let minutagem = 0;
+  const mapa: MapaPartida = new MapaPartida();
+  let minutagem: number = 0;
 
   const equipes: Equipe[] = pegaEquipes();
   const equipeAzul: Equipe = equipes[0]!;
@@ -62,8 +65,8 @@ const calculaEstadoEmocional = (equipeAzul: Equipe, equipeVermelho: Equipe, mome
 }
 
 const defineVencedorEvento = (deltaTotal: number): LADO => {
-  let randomNumber: number = Math.random();
-  let prob: number = (1 / (1 + Math.exp(-k * deltaTotal)));
+  const randomNumber: number = Math.random();
+  const prob: number = (1 / (1 + Math.exp(-k * deltaTotal)));
 
   console.log("Prob: ", prob);
   console.log("Random: ", randomNumber);
@@ -76,6 +79,7 @@ const verificaEvento = (torresEscolhidas: Estrutura[]): number => {
 
   const [nomeEvento, valorEvento] = sorteiaEvento();
   const rotaEscolhida: ROTA = escolherRota(torresEscolhidas);
+  const proxEvento: boolean = Math.random() < 0.5;
 
   let danoNaEstrutura: number = 0;
   let estruturaDano: boolean = false;
@@ -128,9 +132,19 @@ const escolherRota = (torresEscolhidas: Estrutura[]): ROTA => {
 }
 
 const sorteiaEvento = (): [string, number] => {
-  return eventos[Math.floor(Math.random() * eventos.length)]!;
+  return eventosPermitidos[Math.floor(Math.random() * eventosPermitidos.length)]!;
 }
 
 const pegaEquipes = (): Equipe[] => {
   return [equipeAzul, equipeVermelho];
+}
+
+const proximoEvento = (proxEvento: boolean): number => {
+  if (proxEvento) {
+    const eventosAdicionais: [string, number][] = [
+      
+    ]
+  } else {
+    return 0;
+  }
 }
